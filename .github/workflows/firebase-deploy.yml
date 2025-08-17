@@ -27,19 +27,20 @@ jobs:
       - name: Install Angular and Firebase CLI
         run: npm install -g @angular/cli firebase-tools
 
-      - name: Set NG_APP_API_KEY
-        run: echo "NG_APP_API_KEY=${{ secrets.NG_APP_API_KEY }}" >> $GITHUB_ENV
+      - name: Replace API Key in environment
+        run: |
+          ENV_FILE="src/environments/environment${([ "${GITHUB_REF##*/}" == "master" ] && echo ".prod") || echo ""}.ts"
+          echo "Replacing API key in $ENV_FILE"
+          sed -i "s|ApiKey: ''|ApiKey: '${{ secrets.NG_APP_API_KEY }}'|" $ENV_FILE
 
       - name: Build Angular app
-        env:
-          NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
         run: |
           if [ "${GITHUB_REF##*/}" == "master" ]; then
             echo "Building production version..."
-            ng build --configuration production --define NG_APP_API_KEY="'${NG_APP_API_KEY}'"
+            ng build --configuration production
           else
             echo "Building dev version..."
-            ng build --configuration dev --define NG_APP_API_KEY="'${NG_APP_API_KEY}'"
+            ng build --configuration dev
           fi
 
       - name: Deploy to Firebase Hosting (dev target)
