@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.ref == 'refs/heads/master' || (github.event_name == 'pull_request' && github.head_ref == 'dev')
     runs-on: ubuntu-latest
 
     steps:
@@ -40,8 +39,10 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
         run: |
           if [ "${GITHUB_REF##*/}" == "master" ]; then
+            echo "Building production version..."
             ng build --configuration production
           else
+            echo "Building dev version..."
             ng build --configuration dev
           fi
 
