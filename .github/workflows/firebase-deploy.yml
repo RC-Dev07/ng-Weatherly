@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
   pull_request:
     branches:
       - master
@@ -30,17 +31,32 @@ jobs:
       - name: Replace API Key in environment
         shell: bash
         run: |
-          if [ "${GITHUB_REF##*/}" == "master" ]; then
+          # Determinar la rama target
+          if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+            BRANCH="${{ github.event.pull_request.base.ref }}"
+          else
+            BRANCH="${GITHUB_REF##*/}"
+          fi
+
+          if [ "$BRANCH" == "master" ]; then
             ENV_FILE="src/environments/environment.prod.ts"
           else
             ENV_FILE="src/environments/environment.ts"
           fi
+
           echo "Replacing API key in $ENV_FILE"
           sed -i "s|ApiKey: ''|ApiKey: '${{ secrets.NG_APP_API_KEY }}'|" "$ENV_FILE"
 
       - name: Build Angular app
+        shell: bash
         run: |
-          if [ "${GITHUB_REF##*/}" == "master" ]; then
+          if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+            BRANCH="${{ github.event.pull_request.base.ref }}"
+          else
+            BRANCH="${GITHUB_REF##*/}"
+          fi
+
+          if [ "$BRANCH" == "master" ]; then
             echo "Building production version..."
             ng build --configuration production
           else
