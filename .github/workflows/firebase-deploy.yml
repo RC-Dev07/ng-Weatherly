@@ -35,9 +35,11 @@ jobs:
           NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
         run: |
           if [ "${GITHUB_REF##*/}" == "master" ]; then
-            ng build --configuration production --define "NG_APP_API_KEY=${NG_APP_API_KEY}"
+            echo "Building production version..."
+            ng build --configuration production --define NG_APP_API_KEY="'${NG_APP_API_KEY}'"
           else
-            ng build --configuration dev --define "NG_APP_API_KEY=${NG_APP_API_KEY}"
+            echo "Building dev version..."
+            ng build --configuration dev --define NG_APP_API_KEY="'${NG_APP_API_KEY}'"
           fi
 
       - name: Deploy to Firebase Hosting (dev target)
