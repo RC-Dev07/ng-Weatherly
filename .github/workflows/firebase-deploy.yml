@@ -28,10 +28,15 @@ jobs:
         run: npm install -g @angular/cli firebase-tools
 
       - name: Replace API Key in environment
+        shell: bash
         run: |
-          ENV_FILE="src/environments/environment${([ "${GITHUB_REF##*/}" == "master" ] && echo ".prod") || echo ""}.ts"
+          if [ "${GITHUB_REF##*/}" == "master" ]; then
+            ENV_FILE="src/environments/environment.prod.ts"
+          else
+            ENV_FILE="src/environments/environment.ts"
+          fi
           echo "Replacing API key in $ENV_FILE"
-          sed -i "s|ApiKey: ''|ApiKey: '${{ secrets.NG_APP_API_KEY }}'|" $ENV_FILE
+          sed -i "s|ApiKey: ''|ApiKey: '${{ secrets.NG_APP_API_KEY }}'|" "$ENV_FILE"
 
       - name: Build Angular app
         run: |
