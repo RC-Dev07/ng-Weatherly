@@ -1,0 +1,39 @@
+name: CI/CD Angular Firebase NovaTienda
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    if: github.ref == 'refs/heads/master' || (github.event_name == 'pull_request' && github.head_ref == 'dev')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Angular and Firebase CLI
+        run: npm install -g @angular/cli firebase-tools
+
+      - name: Set environment variable
+        run: echo "NG_APP_API_KEY=${{ secrets.NG_APP_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Build Angular app
+        run: ng build --configuration production
+        env:
+          NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
+
+      - name: Deploy to Firebase
+        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"

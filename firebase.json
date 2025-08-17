@@ -1,0 +1,48 @@
+{
+  "hosting": [
+    {
+      "target": "dev",
+      "public": "dist/weatherly/browser",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "headers": [
+        {
+          "source": "**/*.@(js|css|png|jpg|svg|webp|woff2|woff|ttf|json)",
+          "headers": [
+            { "key": "Cache-Control", "value": "public,max-age=31536000,immutable" }
+          ]
+        },
+        {
+          "source": "/index.html",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache" }
+          ]
+        }
+      ],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ]
+    },
+    {
+      "target": "prod",
+      "public": "dist/weatherly/browser",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "headers": [
+        {
+          "source": "**/*.@(js|css|png|jpg|svg|webp|woff2|woff|ttf|json)",
+          "headers": [
+            { "key": "Cache-Control", "value": "public,max-age=31536000,immutable" }
+          ]
+        },
+        {
+          "source": "/index.html",
+          "headers": [
+            { "key": "Cache-Control", "value": "no-cache" }
+          ]
+        }
+      ],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ]
+    }
+  ]
+}

@@ -1,16 +1,91 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>QuizzRodDev</title>
+  <title>Weatherly</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="description" content="Aplicación de pronóstico del tiempo con datos precisos y actualizados">
+  <meta name="keywords" content="clima, tiempo, pronóstico, temperatura, meteorología">
+  <meta name="author" content="Tu Nombre">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+
+  <!-- Preconnect y preload fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" href="https://fonts.gstatic.com/s/plusjakartasans.woff2" type="font/woff2" crossorigin>
+
+  <!-- Google Fonts optimizada -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Preload imágenes críticas -->
+  <link rel="preload" as="image" href="assets/img/logo.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/img/hero.webp" fetchpriority="high">
+
+  <!-- PWA & Open Graph -->
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="manifest" href="manifest.json">
+  <meta property="og:title" content="Weatherly - Pronóstico del Tiempo">
+  <meta property="og:description" content="Obtén información meteorológica precisa y actualizada">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Loading screen minimal -->
+  <style>
+    #loading {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #121212;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    .loading-spinner {
+      width: 50px; height: 50px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
 </head>
 <body>
+  <!-- Loading screen -->
+  <div id="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Angular App -->
   <app-root></app-root>
+
+  <!-- Fallback JS deshabilitado -->
+  <noscript>
+    <div style="text-align:center;padding:50px;font-family:'Plus Jakarta Sans',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#f8fafc;">
+      <h2 style="color:#1e293b;margin-bottom:16px;">JavaScript Requerido</h2>
+      <p style="color:#64748b;margin-bottom:8px;">Weatherly requiere JavaScript para funcionar correctamente.</p>
+      <p style="color:#64748b;">Por favor, habilita JavaScript en tu navegador para acceder al pronóstico del tiempo.</p>
+    </div>
+  </noscript>
+
+  <!-- Optimized script -->
+  <script>
+    // Remover loading screen inmediatamente
+    document.addEventListener('DOMContentLoaded', function() {
+      const loading = document.getElementById('loading');
+      if (loading) loading.remove();
+    });
+
+    // Performance monitoring opcional
+    if ('performance' in window) {
+      window.addEventListener('load', () => {
+        const perfData = performance.getEntriesByType('navigation')[0];
+        console.log('Tiempo de carga:', perfData.loadEventEnd - perfData.fetchStart, 'ms');
+      });
+    }
+  </script>
 </body>
 </html>

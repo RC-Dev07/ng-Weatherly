@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "weatherly-2ea41"
+  },
+  "targets": {
+    "weatherly-2ea41": {
+      "hosting": {
+        "prod": [
+          "weatherly-2ea41"
+        ],
+        "dev": [
+          "weatherly-dev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
