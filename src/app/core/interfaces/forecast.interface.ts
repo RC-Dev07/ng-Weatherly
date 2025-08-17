@@ -5,7 +5,6 @@ export interface ForecastResponse {
   list: List[];
   city: City;
 }
-
 export interface List {
   dt: number;
   main: Main;
@@ -18,7 +17,6 @@ export interface List {
   sys: Sys;
   dt_txt: string;
 }
-
 export interface Main {
   temp: number;
   feels_like: number;
