@@ -29,22 +29,30 @@ jobs:
         run: npm install -g @angular/cli firebase-tools
 
       - name: Setup Firebase Service Account
-        run: |
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > serviceAccountKey.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/serviceAccountKey.json
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > serviceAccountKey.json
 
       - name: Set NG_APP_API_KEY
         run: echo "NG_APP_API_KEY=${{ secrets.NG_APP_API_KEY }}" >> $GITHUB_ENV
 
       - name: Build Angular app
-        run: ng build --configuration production
         env:
           NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
+        run: |
+          if [ "${GITHUB_REF##*/}" == "master" ]; then
+            ng build --configuration production
+          else
+            ng build --configuration dev
+          fi
 
       - name: Deploy to Firebase Hosting (dev target)
-        if: github.ref != 'refs/heads/master'  # deploy dev en ramas distintas de master
+        if: github.ref != 'refs/heads/master'
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
         run: firebase deploy --only hosting:dev --project weatherly-2ea41
 
       - name: Deploy to Firebase Hosting (prod target)
-        if: github.ref == 'refs/heads/master'  # deploy prod solo en master
+        if: github.ref == 'refs/heads/master'
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
         run: firebase deploy --only hosting:prod --project weatherly-2ea41
