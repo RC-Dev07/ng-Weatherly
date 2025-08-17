@@ -14,7 +14,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,7 +28,12 @@ jobs:
       - name: Install Angular and Firebase CLI
         run: npm install -g @angular/cli firebase-tools
 
-      - name: Set environment variable
+      - name: Setup Firebase Service Account
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > serviceAccountKey.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/serviceAccountKey.json
+
+      - name: Set NG_APP_API_KEY
         run: echo "NG_APP_API_KEY=${{ secrets.NG_APP_API_KEY }}" >> $GITHUB_ENV
 
       - name: Build Angular app
@@ -35,5 +41,10 @@ jobs:
         env:
           NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
 
-      - name: Deploy to Firebase
-        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+      - name: Deploy to Firebase Hosting (dev target)
+        if: github.ref != 'refs/heads/master'  # deploy dev en ramas distintas de master
+        run: firebase deploy --only hosting:dev --project weatherly-2ea41
+
+      - name: Deploy to Firebase Hosting (prod target)
+        if: github.ref == 'refs/heads/master'  # deploy prod solo en master
+        run: firebase deploy --only hosting:prod --project weatherly-2ea41
