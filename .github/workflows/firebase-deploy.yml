@@ -57,6 +57,7 @@ jobs:
           else
             echo "Building dev version..."
             ng build --configuration dev
+          fi
 
       - name: Deploy to Firebase Hosting
         shell: bash
@@ -67,3 +68,4 @@ jobs:
           else
             echo "Deploying to DEV..."
             firebase deploy --only hosting:dev --token "${{ secrets.FIREBASE_TOKEN }}"
+          fi
