@@ -18,6 +18,7 @@ export class WeatherService {
       `${this.apiUrl}/weather?q=${city}&appid=${this.apiKey}&units=metric&lang=es`
     );
   }
+  
 
   getForecastByCity(city: string): Observable<ForecastResponse> {
     return this.http.get<ForecastResponse>(
