@@ -27,16 +27,12 @@ jobs:
       - name: Install Angular and Firebase CLI
         run: npm install -g @angular/cli firebase-tools
 
-      - name: Setup Firebase Service Account
-        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > serviceAccountKey.json
-
       - name: Set NG_APP_API_KEY
         run: echo "NG_APP_API_KEY=${{ secrets.NG_APP_API_KEY }}" >> $GITHUB_ENV
 
       - name: Build Angular app
         env:
           NG_APP_API_KEY: ${{ secrets.NG_APP_API_KEY }}
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
         run: |
           if [ "${GITHUB_REF##*/}" == "master" ]; then
             echo "Building production version..."
@@ -48,12 +44,8 @@ jobs:
 
       - name: Deploy to Firebase Hosting (dev target)
         if: github.ref != 'refs/heads/master'
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
-        run: firebase deploy --only hosting:dev --project weatherly-2ea41
+        run: firebase deploy --only hosting:dev --project weatherly-2ea41 --token "${{ secrets.FIREBASE_TOKEN }}"
 
       - name: Deploy to Firebase Hosting (prod target)
         if: github.ref == 'refs/heads/master'
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/serviceAccountKey.json
-        run: firebase deploy --only hosting:prod --project weatherly-2ea41
+        run: firebase deploy --only hosting:prod --project weatherly-2ea41 --token "${{ secrets.FIREBASE_TOKEN }}"
