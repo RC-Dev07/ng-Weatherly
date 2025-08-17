@@ -1,0 +1,29 @@
+.titulo {
+  text-align: center;
+  font-size: 60px;
+  /* background: linear-gradient(to right, #30cfd0 0%, #42a7eb 100%); */
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  color: transparent;
+  background-clip: text;
+}
+
+.custom-error-message {
+  margin-top: 1rem;
+  border-left: 4px solid var(--red-500);
+  padding: 40px;
+  .p-message-wrapper {
+    padding: 1rem 1.5rem;
+  }
+
+  ul {
+    margin: 0.5rem 0 0 1rem;
+    padding-left: 1rem;
+  }
+}
+
+:host {
+  display: block;
+  overflow: hidden;
+  /* background-color: red; */
+  /* min-height: 100vh; */
+}

@@ -1,0 +1,57 @@
+.weather-card {
+  border-radius: 12px;
+  margin: 20px;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  min-height: 200px;
+  max-width: 450px;
+}
+
+/* Fondos climáticos con gradientes */
+.bg-clear {
+  background: linear-gradient(160deg, #56ccf2 0%, #2f80ed 100%);
+  color: #fff;
+}
+
+.bg-clouds {
+  background: linear-gradient(160deg, #bbd2e1 0%, #7a9cc6 100%);
+  color: #2c3e50;
+}
+
+.bg-rain {
+  background: linear-gradient(160deg, #4b79cf 0%, #283e51 100%);
+}
+
+.bg-thunderstorm {
+  background: linear-gradient(160deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+.bg-snow {
+  background: linear-gradient(160deg, #e6f0f4 0%, #b8d8e6 100%);
+  color: #2c3e50;
+}
+
+.bg-mist {
+  background: linear-gradient(160deg, #bdc3c7 0%, #7a8b99 100%);
+  color: #2c3e50;
+}
+
+.data-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+}
+
+.data-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.text-7xl {
+  font-size: 4.5rem;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

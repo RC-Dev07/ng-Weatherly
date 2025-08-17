@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tempus": {
+    "weatherly": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -32,6 +32,12 @@
           },
           "configurations": {
             "production": {
+               "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -58,10 +64,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tempus:build:production"
+              "buildTarget": "weatherly:build:production"
             },
             "development": {
-              "buildTarget": "tempus:build:development"
+              "buildTarget": "weatherly:build:development"
             }
           },
           "defaultConfiguration": "development"

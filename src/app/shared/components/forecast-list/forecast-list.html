@@ -1,0 +1,38 @@
+<div class="forecast-container">
+  <p-card header="Pronóstico 5 días" class="forecast-card">
+    <div class="flex justify-content-center"  @listAnimation>
+      @for (day of dailyForecast(); track $index) {
+      <div @cardAnimation class="h-full">
+        <p-card
+          class="day-card"
+          [class]="getDayBackgroundClass(day.weather.main.toLowerCase())"
+        >
+          <div class="day-content">
+            <div class="day-header">
+              <span class="day-name">
+                {{ day.dt * 1000 | date: 'EEE':'':'es' | uppercase }}
+              </span>
+            </div>
+
+            <div class="weather-icon">
+              <img
+                [src]="
+                  'https://openweathermap.org/img/wn/' +
+                  day.weather.icon +
+                  '@2x.png'
+                "
+                [alt]="day.weather.description"
+              />
+            </div>
+
+            <div class="temperature flex flex-column align-items-center">
+              <span class="min">min: <span class="temp-number">{{ day.tempMin | number : "1.0-0" }}°</span></span>
+              <span class="max">max: <span class="temp-number">{{ day.tempMax | number : "1.0-0" }}°</span></span>
+            </div>
+          </div>
+        </p-card>
+      </div>
+      }
+    </div>
+  </p-card>
+</div>

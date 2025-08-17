@@ -1,0 +1,4 @@
+ <div class="flex gap-2">
+    <input type="text" pInputText [(ngModel)]="city" variant="filled" placeholder="Ingrese la ciudad a buscar..." (keyup.enter)="onSearch()"/>
+    <p-button (click)="onSearch()" label="Buscar" severity="info" [disabled]="city == ''"/>
+ </div>

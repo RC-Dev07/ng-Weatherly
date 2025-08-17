@@ -1,0 +1,30 @@
+<div class="flex flex-column align-items-center home-container">
+  <h1 class="titulo">Weatherly</h1>
+  <search-bar (search)="loadWeather($event)"></search-bar>
+
+  @if (weather() && !mostrarError()) {
+  <div @cardAnimation>
+    <weather-card [weather]="weather()!" />
+  </div>
+  } @if(mostrarError()){
+  <div class="m-4">
+    <p-message severity="error" styleClass="custom-error-message">
+      <div class="flex align-items-center gap-2">
+        <i class="pi pi-map-marker"></i>
+        <span
+          >No encontramos "<strong>{{ textCity() }}</strong
+          >". Verifica:</span
+        >
+      </div>
+      <ul class="mt-2">
+        <li>El nombre está bien escrito</li>
+        <li>Usa acentos cuando corresponda</li>
+      </ul>
+    </p-message>
+  </div>
+  } @if (weather() && !mostrarError()) {
+  <div class="m-1">
+    <forecast-list [forecast]="forecast()!" />
+  </div>
+  }
+</div>
